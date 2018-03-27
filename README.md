@@ -23,3 +23,10 @@ Then, the interpolated path must be transformed to keep the important points aro
 ```
 ./empty_spline.py visual_path.dat
 ```
+Now we can go to next step.
+
+## Second step
+Data are created using 2 files : splined.dat and your_image.jpg. Run "create_data_1.py" :
+```
+./create_data_1.py your_image.jpg
+```
