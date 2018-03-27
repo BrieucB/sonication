@@ -1,0 +1,61 @@
+#!/usr/bin/python
+
+import math as m
+import numpy as np
+import random as r
+import sys
+
+arg1=sys.argv[1]
+
+f_spline=open("splined.dat", "r")
+
+f_out=open("spline_empty.dat", "w")
+
+r_max=50
+
+def proba_supp(x0, y0, x, y):
+	s=r_max/8
+	dr=m.sqrt((x0-x)*(x0-x)+(y0-y)*(y0-y))
+	res=m.exp(-dr*dr/(2*s*s))
+	res=1-res
+	return res
+
+x0_min=-1000
+y0_min=-1000	
+for lspline in f_spline:
+	w=lspline.split()
+	x=float(w[1])
+	y=float(w[2])
+	t=float(w[0])
+	
+	f_ref=open(arg1, "r")
+	for lref in f_ref:
+		w0=lref.split()
+		x0=float(w0[0])
+		y0=float(w0[1])
+		#print(x0)
+		dr_min=m.sqrt((x0_min-x)*(x0_min-x)+(y0_min-y)*(y0_min-y))
+		dr=m.sqrt((x0-x)*(x0-x)+(y0-y)*(y0-y))
+		if(dr_min>dr):
+			x0_min=x0
+			y0_min=y0
+	f_ref.close()
+		
+	p=proba_supp(x0_min, y0_min, x, y)
+	#print(x0_min)
+	rand=r.random()
+#	if(p!=1.0):
+#		print(p)
+#		print(rand)
+		
+	if(rand>p):
+		f_out.write(str(t))
+		f_out.write(str(" "))
+		f_out.write(str(x))
+		f_out.write(str(" "))
+		f_out.write(str(y))
+		f_out.write(str("\n\n"))
+	
+f_out.close()
+f_ref.close()
+f_spline.close()
